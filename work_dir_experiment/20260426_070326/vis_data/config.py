@@ -148,11 +148,12 @@ model = dict(
         dropout_ratio=0.1,
         in_channels=1024,
         in_index=2,
-        loss_decode=[
-            dict(
-                loss_name='loss_ce', loss_weight=0.5, type='CrossEntropyLoss'),
-            dict(loss_name='loss_dice', loss_weight=0.5, type='DiceLoss'),
-        ],
+        loss_decode=dict(
+            alpha=0.25,
+            gamma=2.0,
+            loss_weight=0.3,
+            type='FocalLoss',
+            use_sigmoid=True),
         norm_cfg=dict(requires_grad=True, type='SyncBN'),
         num_classes=3,
         num_convs=1,
@@ -213,11 +214,12 @@ model = dict(
         dropout_ratio=0.1,
         in_channels=2048,
         in_index=3,
-        loss_decode=[
-            dict(
-                loss_name='loss_ce', loss_weight=0.5, type='CrossEntropyLoss'),
-            dict(loss_name='loss_dice', loss_weight=0.5, type='DiceLoss'),
-        ],
+        loss_decode=dict(
+            alpha=0.25,
+            gamma=2.0,
+            loss_weight=1.0,
+            type='FocalLoss',
+            use_sigmoid=True),
         norm_cfg=dict(requires_grad=True, type='SyncBN'),
         num_classes=3,
         type='DepthwiseSeparableASPPHead'),
@@ -426,8 +428,8 @@ visualizer = dict(
         dict(type='TensorboardVisBackend'),
         dict(
             init_kwargs=dict(
-                project_name='Animals_Segmentation',
+                project_name='Animals_Segmentation_Experiment',
                 task_name='DeepLabV3_ResNet50'),
             type='ClearMLVisBackend'),
     ])
-work_dir = './work_dir'
+work_dir = './work_dir_experiment'
